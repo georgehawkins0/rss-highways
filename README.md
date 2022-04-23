@@ -9,6 +9,6 @@ Get current incidents of roads provided by highways englands RSS feed.
 
 2. Find current incidents on all main roads
 
-        $ highways.py
+        $ highways.py all
 
 

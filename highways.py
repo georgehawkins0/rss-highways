@@ -2,10 +2,10 @@ import feedparser
 import argparse
 
 def current_incidents(road=None):
-    if road:
-        road = f"/{road}"
-    else:
+    if road == "ALL":
         road = ""
+    else:
+        road = f"/{road}"
         
     NewsFeed = feedparser.parse(f"https://m.highwaysengland.co.uk/feeds/rss/UnplannedEvents{road}.xml")
     if NewsFeed.status == 200:
@@ -35,7 +35,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     roads = ["A1","A1(M)","M25","M1","M2","M3","M4","M5","M6","M40","M42","M60","M62","M621"]
 
-    if args.road.upper() in roads:
-        current_incidents(args.road)
+    if args.road.upper() in roads or args.road.upper() == "ALL":
+        current_incidents(args.road.upper())
     else:
         print("Invalid road.")
