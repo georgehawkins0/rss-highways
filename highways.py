@@ -3,28 +3,32 @@ import argparse
 
 def current_incidents(road=None):
     if road == "ALL":
-        road = ""
+        road_ = "" # for parse into url
+        road = "" # for naming by in lines 14,21,28
     else:
-        road = f"/{road}"
+        road_ = f"/{road}" # for parse into url
         
-    NewsFeed = feedparser.parse(f"https://m.highwaysengland.co.uk/feeds/rss/UnplannedEvents{road}.xml")
+    NewsFeed = feedparser.parse(f"https://m.highwaysengland.co.uk/feeds/rss/UnplannedEvents{road_}.xml")
     if NewsFeed.status == 200:
         if len(NewsFeed.entries) > 1:
-            print(f"There are {len(NewsFeed.entries)} current incidents: \n")
+            print(f"There are {len(NewsFeed.entries)} current incidents on {road}: \n")
             for entry in NewsFeed.entries:
                 print(entry["published"])
                 print(entry["description"])
                 print("\n")
 
         elif len(NewsFeed.entries) == 1:
-            print(f"There is {len(NewsFeed.entries)} current incident: \n")
+            print(f"There is {len(NewsFeed.entries)} current incident on {road}: \n")
             for entry in NewsFeed.entries:
                 print(entry["published"])
                 print(entry["description"])
                 print("\n")
 
         else:
-            print("No current incidents.")
+            if road != "": # if the road has an actual name
+                print(f"No current incidents on {road}. Is it a valid road?")
+            else: # if was parsed into function as ALL
+                print("No current incidents.")
     
     else:
         print("Unknown error with RSS feed.")
@@ -33,9 +37,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Highways england RSS feed")
     parser.add_argument('road', type=str, default=None, help="The road name")
     args = parser.parse_args()
-    roads = ["A1","A1(M)","M25","M1","M2","M3","M4","M5","M6","M40","M42","M60","M62","M621"]
 
-    if args.road.upper() in roads or args.road.upper() == "ALL":
-        current_incidents(args.road.upper())
-    else:
-        print("Invalid road.")
+    current_incidents(args.road.upper())
