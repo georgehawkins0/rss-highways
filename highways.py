@@ -26,7 +26,7 @@ def current_incidents(road=None):
 
         else:
             if road != "": # if the road has an actual name
-                print(f"No current incidents on {road}. Is it a valid road?")
+                print(f"No current incidents on {road}.") # the rss feed doesnt return a 404. An invalid road name will return a 200 with no entries.
             else: # if was parsed into function as ALL
                 print("No current incidents.")
     
@@ -34,8 +34,8 @@ def current_incidents(road=None):
         print("Unknown error with RSS feed.")
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Highways england RSS feed")
-    parser.add_argument('road', type=str, default=None, help="The road name")
+    parser = argparse.ArgumentParser(description="Highways england RSS feed.")
+    parser.add_argument('road', type=str, default=None, help="The road name. Use ALL for all major trunk roads.")
     args = parser.parse_args()
 
     current_incidents(args.road.upper())
